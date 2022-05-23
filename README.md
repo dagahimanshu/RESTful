@@ -359,7 +359,7 @@ Field bookDao in com.adobe.demo.service.SampleService required a single bean, bu
 	- bookDaoMySQLImpl: defined in file [C:\Trainings WS\Adobe\MayRestfulWS\RESTful\demo\target\classes\com\adobe\demo\repo\BookDaoMySQLImpl.class]
 
 
-Solution 1:
+* Solution 1:
 * marking one of the beans as @Primary
 
 @Repository
@@ -369,7 +369,7 @@ public class BookDaoMySQLImpl implements BookDao {
 @Repository
 public class BookDaoMongoImpl implements BookDao {
 
-Solution 2:
+* Solution 2:
 * different uses cases needs different instances @Qualifier
 
 @Repository
@@ -385,7 +385,8 @@ public class SampleService {
 	@Qualifier("bookDaoMongoImpl")
 	private BookDao bookDao;
 
-Solution 3:
+* Solution 3:
+
 using @Profile
 
 
@@ -414,6 +415,84 @@ Run As ==> Run Configurations ==> Program Arguments
 
 How it resolves?
 Command Line Arguments ==> System properties ==> application.properties
+
+* Other ways to resolve
+
+@ConditionalOnProperty
+
+application.properties
+dao=mysql
+
+@ConditionalOnProperty(name = "dao", havingValue = "mongo")
+public class BookDaoMongoImpl implements BookDao {
+
+@ConditionalOnProperty(name = "dao", havingValue = "mysql")
+public class BookDaoMySQLImpl implements BookDao {
+
+---
+
+@Repository
+@ConditionalOnMissingBean(type = "BookDao.class")
+public class BookDaoMongoImpl implements BookDao {
+
+---------
+
+@ConditionalOnBean(type = "MongoDBConnection.class")
+
+=========================================================
+
+
+Spring instantiates objects of classes which has any of the above 6 annoations.
+* What about 3rd party classes to be used in Spring Container
+* Spring Container by default uses default constructor for instantiatiting beans
+
+@Bean ==> factory method
+
+@Service
+public class MyService {
+	@Autowired
+	DataSource ds; // c3p0 datasource
+
+	doTask() {
+		ds.getConnection()...
+	}
+}
+
+@Configuration
+public class AppConfig {
+
+	@Bean
+	public DataSource dataSource() {
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("dbuser");                                  
+		cpds.setPassword("dbpassword"); 
+		return cpds;
+	}
+}
+
+
+===
+
+@Order(100)
+@Service
+public class Comp1 {
+
+}
+
+
+@Order(-3)
+@Service
+public class Comp2 {
+
+}
+
+=====================
+
+Spring Data JPA with RESTful Web services
+
+============================================
 
 
 

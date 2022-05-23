@@ -6,12 +6,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import com.adobe.demo.cfg.EmailConfig;
 import com.adobe.demo.service.SampleService;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner{
 	@Autowired
 	SampleService service;
+	@Autowired
+	EmailConfig emailConfig;
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(DemoApplication.class, args);
 		
@@ -28,6 +31,7 @@ public class DemoApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		// code here executes only on contanier creation completed
 		service.createBook();
+		emailConfig.sendMsg("Book created");
 	}
 
 }
