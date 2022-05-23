@@ -140,3 +140,50 @@ java.lang.Error: SWT Resource was not properly disposed
 
 !ENTRY org.eclipse.oomph.setup.ui 1 0 2022-05-23 09:31:48.313
 !MESSAGE Setup tasks were performed during startup updating 1 preference.See 'C:\Users\banup\eclipse\jee-2021-03\eclipse\configuration\org.eclipse.oomph.setup\setup.log' for details
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2022-05-23 10:31:47.949
+!MESSAGE No repository found at http://download.eclipse.org/technology/m2e/releases/.
+
+!ENTRY org.eclipse.equinox.p2.transport.ecf 4 1002 2022-05-23 10:33:16.358
+!MESSAGE HTTP Server 'Bad Gateway' : http://dl.bintray.com/testng-team/testng-p2-release/content.xml
+!STACK 1
+org.eclipse.ecf.filetransfer.BrowseFileTransferException: HttpComponents connection error response code 502.
+	at org.eclipse.ecf.provider.filetransfer.httpclient45.HttpClientFileSystemBrowser.runRequest(HttpClientFileSystemBrowser.java:278)
+	at org.eclipse.ecf.provider.filetransfer.browse.AbstractFileSystemBrowser$DirectoryJob.run(AbstractFileSystemBrowser.java:71)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.ecf.identity 4 0 2022-05-23 10:33:16.359
+!MESSAGE HttpComponents connection error response code 502.
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2022-05-23 10:35:47.403
+!MESSAGE An error occurred while collecting items to be installed
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2022-05-23 10:35:47.403
+!MESSAGE session context was:(profile=C__Users_banup_eclipse_jee-2021-03_eclipse, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.403
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.branding,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.403
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.core,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.403
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.ui,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.403
+!MESSAGE No repository found containing: osgi.bundle,org.gradle.toolingapi,7.4.2.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.403
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.compat,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.403
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.buildship,3.1.6.v20220511-1224
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2022-05-23 10:35:47.405
+!MESSAGE An error occurred while collecting items to be installed
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2022-05-23 10:35:47.405
+!MESSAGE session context was:(profile=C__Users_banup_eclipse_jee-2021-03_eclipse, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.405
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.branding,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.405
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.core,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.405
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.ui,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.405
+!MESSAGE No repository found containing: osgi.bundle,org.gradle.toolingapi,7.4.2.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.406
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.buildship.compat,3.1.6.v20220511-1224
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2022-05-23 10:35:47.406
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.buildship,3.1.6.v20220511-1224
