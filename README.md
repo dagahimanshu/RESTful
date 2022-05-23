@@ -189,3 +189,151 @@ Spring Boot?
 
 If we develop web applications:
 configures ==> Tomcat or Netty out of the box
+
+==============
+
+interface BookDao {
+	addBook(Book);
+}
+
+public class BookDaoMongoImpl implements BookDao {
+	..
+}
+
+public class BookDaoMySqlImpl implements BookDao {
+	..
+}
+
+public class MyService {
+	private BookDao dao;
+	public MyService(BookDao dao) {
+		this.dao = dao;
+	}
+
+	doTask() { dao.addBook(..)}
+}
+
+
+Constructor DI: 
+beans.xml
+<bean id="mongoDao" class="pkg.BookDaoMongoImpl" /> 
+<bean id="mysqlDao" class="pkg.BookDaoMySQLImpl" /> 
+<!-- create an instance of BookDaoMongoImpl by name "mongoDao" -->
+
+<bean id="service" class="pkg.MyService"> 
+	<constructor index="0" ref="mysqlDao" />
+</bean>
+
+==========
+
+
+public class MyService {
+	private BookDao dao;
+	public void setRepo(BookDao dao) {
+		this.dao = dao;
+	}
+
+	doTask() { dao.addBook(..)}
+}
+
+Setter DI:
+
+beans.xml
+<bean id="mongoDao" class="pkg.BookDaoMongoImpl" /> 
+<bean id="mysqlDao" class="pkg.BookDaoMySQLImpl" /> 
+<!-- create an instance of BookDaoMongoImpl by name "mongoDao" -->
+
+<bean id="service" class="pkg.MyService"> 
+	<property name="repo" ref="mysqlDao" />
+</bean>
+
+=======================
+
+Annotation 
+
+
+interface BookDao {
+	addBook(Book);
+}
+
+@Repository
+public class BookDaoMongoImpl implements BookDao {
+	..
+}
+
+public class BookDaoMySqlImpl implements BookDao {
+	..
+}
+
+@Service
+public class MyService {
+	@Autowired
+	private BookDao dao; 
+	 
+	doTask() { dao.addBook(..)}
+}
+
+-------------
+
+Spring instaniates objects of classes which has one of these annotations at class-level:
+1) @Component ==> utility classes / helper classes
+2) @Repository ==> Persistence tier code
+
+	try {
+
+	} catch(SQLException ex) {
+		if(ex.getErrorCode() == 301) {
+			throw new DuplicateKeyCodesExeption();
+		}
+	}
+
+3) @Service
+4) @Controller
+5) @RestController
+6) @Configuration
+
+
+@Autowired ==> wiring happens using ByteCode instrumentation
+* CGLib
+* JavaAssist
+* ByteBuddy
+
+Book b = jpa.getById(4); ==> Proxy object instead of actual object [ CGLib creates proxy]
+	==> not hit the DB
+
+for(int i = 1; i <= 100; i ++) {
+	Book[] books = ..
+	books[i] = jpa.getById(i); // here we have 100 proxy objects
+}
+
+books[23].getTitle();  // hit the db and get book from DB; can't use proxy
+
+books[45].getTitle();  // hit the db and get book from DB; can't use proxy
+
+============================================
+
+https://start.spring.io
+
+====================================
+
+For Standalone as well as web application ==> this is an entry point
+
+```
+@SpringBootApplication
+public class DemoApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+
+}
+```
+BeanFactory, ApplicationContext are interfaces for SpringContainer
+run(); creates a SpringContainer
+
+SpringApplication.run(DemoApplication.class, args); ==> returns an ApplicationContext [ interface for Spring Container]
+
+
+
+
+
