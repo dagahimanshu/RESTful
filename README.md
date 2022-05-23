@@ -25,6 +25,7 @@ Install Docker Desktop
 
 Docker steps:
 
+```
 a) docker pull mysql
 
 b) docker run --name local-mysql –p 3306:3306 -e MYSQL_ROOT_PASSWORD=Welcome123 -d mysql
@@ -45,5 +46,5 @@ bash terminal> mysql -u "root" -p
 
 mysql> exit
 
-
+```
 ==========
