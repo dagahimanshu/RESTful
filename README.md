@@ -334,6 +334,55 @@ run(); creates a SpringContainer
 SpringApplication.run(DemoApplication.class, args); ==> returns an ApplicationContext [ interface for Spring Container]
 
 
+@SpringBootApplication
+* @ComponentScan(basePackages="com.adobe.demo")
+	==> scan com.adobe.demo and sub packages for any of the above mentioned (6) annoations and instanite
 
+* @EnableAutoConfiguration
+	==> looks in dependenies and instantiates configuration objects
+	like Tomcat, DB pool, Hibernate , ...
+
+* @Configuration
+
+===
+
+Problem:
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field bookDao in com.adobe.demo.service.SampleService required a single bean, but 2 were found:
+	- bookDaoMongoImpl: defined in file [C:\Trainings WS\Adobe\MayRestfulWS\RESTful\demo\target\classes\com\adobe\demo\repo\BookDaoMongoImpl.class]
+	- bookDaoMySQLImpl: defined in file [C:\Trainings WS\Adobe\MayRestfulWS\RESTful\demo\target\classes\com\adobe\demo\repo\BookDaoMySQLImpl.class]
+
+
+Solution 1:
+* marking one of the beans as @Primary
+
+@Repository
+@Primary
+public class BookDaoMySQLImpl implements BookDao {
+
+@Repository
+public class BookDaoMongoImpl implements BookDao {
+
+Solution 2:
+* different uses cases needs different instances @Qualifier
+
+@Repository
+public class BookDaoMySQLImpl implements BookDao {
+
+@Repository
+public class BookDaoMongoImpl implements BookDao {
+
+
+@Service
+public class SampleService {
+	@Autowired
+	@Qualifier("bookDaoMongoImpl")
+	private BookDao bookDao;
 
 
