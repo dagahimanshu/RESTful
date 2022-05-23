@@ -385,4 +385,35 @@ public class SampleService {
 	@Qualifier("bookDaoMongoImpl")
 	private BookDao bookDao;
 
+Solution 3:
+using @Profile
+
+
+@Repository
+@Profile("prod")
+public class BookDaoMongoImpl implements BookDao {
+
+
+@Repository
+@Profile("dev")
+public class BookDaoMySQLImpl implements BookDao {
+
+@Service
+public class SampleService {
+	@Autowired
+	private BookDao bookDao;
+
+src/main/resources/application.properties
+spring.profiles.active=dev
+
+OR
+Commandline argument
+
+Run As ==> Run Configurations ==> Program Arguments
+--spring.profiles.active=dev
+
+How it resolves?
+Command Line Arguments ==> System properties ==> application.properties
+
+
 

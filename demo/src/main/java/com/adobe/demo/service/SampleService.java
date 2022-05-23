@@ -9,7 +9,6 @@ import com.adobe.demo.repo.BookDao;
 @Service
 public class SampleService {
 	@Autowired
-	@Qualifier("bookDaoMongoImpl")
 	private BookDao bookDao;
 	
 	public void createBook() {
