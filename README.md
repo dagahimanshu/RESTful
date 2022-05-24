@@ -496,5 +496,99 @@ Spring Data JPA with RESTful Web services
 
 Day 2
 
+Spring Boot ==> Dependency Injection ==> provided by Core Modules
+ApplicationContext ==> XML based or Annotation based metadata
+
+@Component
+@Repository
+@Service
+@Controller
+@RestController
+@Configuration
+@Bean
+@SpringBootApplication [ @ComponentScan, @EnableAutoConfiguration, @Configuration]
+
+To control bean instantiations based on different requirements:
+@Primary
+@Qualifier
+@Profile
+@ConditionalOnProperty
+@ConditionalOnBean
+@ConditionalOnMissingBean
+
+=================================
+
+RESTful Webservices and JavaPersistence API
+
+
+JPA ==> is a specification for using ORM
+
+ORM ==> Object Relational Mapping
+
+class <--> RDBMS
+
+	ORM frameworks: Hibernate, JDO, KODO, TopLink, OpenJPA, ...
+
+	JPA ==> Specifiation 
+
+=============
+
+Mapping class to table
+
+@Entity
+public class Product{}
+
+@Entity
+public class Vehicle{}
+
+@Entity
+public class Book {}
+
+========
+
+	@Bean
+	public DataSource dataSource() {
+		ComboPooledDataSource cpds = new ComboPooledDataSource();
+		cpds.setDriverClass( "org.postgresql.Driver" ); //loads the jdbc driver            
+		cpds.setJdbcUrl( "jdbc:postgresql://localhost/testdb" );
+		cpds.setUser("dbuser");                                  
+		cpds.setPassword("dbpassword"); 
+		return cpds;
+	}
+
+	@Bean
+	public LocalContainerEntityManagerFactory emf(DataSource ds) {
+		LocalContainerEntityManagerFactory emf = new LocalContainerEntityManagerFactory();
+		emf.setDataSource(ds);
+		emf.setJpaProvider(new HibernateJpaVendor());
+		emf.setBasePackagesToScan("com.adobe.prj.entity");
+		return emf;
+	}
+
+
+=============
+
+
+
+spring.jpa.hibernate.ddl-auto=update
+
+Hibernate to DDL mapping
+* update ==> TOP Down Approach
+for a class mapped to table; if table exists use it else create the table
+
+* create
+for a class mapped to table; always drop the table and re-create
+
+* verify ==> Bottom to Top Approach
+for a class mapped to table; check if table exists; if exists use it else throw exception
+
+===
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+Inform ORM to generate SQL matchin MySQL8
+
+========
+
+
 
 
