@@ -590,5 +590,104 @@ Inform ORM to generate SQL matchin MySQL8
 ========
 
 
+Spring Data JPA simplifies JPA with ORM operations
+
+Part 1 with JDBC:
+@Override
+	public void addProduct(Product p) throws DaoException {
+		String SQL = "INSERT INTO products (id, name, price, quantity) VALUES (0, ?, ?, ?)";
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(URL, USER, PWD);
+			PreparedStatement ps = con.prepareStatement(SQL);
+			ps.setString(1, p.getName());
+			ps.setDouble(2, p.getPrice());
+			ps.setInt(3, p.getQuantity());
+			ps.executeUpdate(); // INSERT, DELETE, UPDATE
+		} catch (SQLException e) {
+			throw new DaoException("unable to add product", e);
+		} finally {
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@Override
+	public List<Product> getProducts() throws DaoException {
+		List<Product> products = new ArrayList<>();
+		String SQL = "SELECT id, name, price, quantity FROM products";
+		Connection con = null;
+		try {
+			con = DriverManager.getConnection(URL, USER, PWD);
+			Statement stmt = con.createStatement();
+			ResultSet rs  = stmt.executeQuery(SQL); // SELECT
+			while(rs.next()) {
+				Product p = new Product();
+				p.setId(rs.getInt("ID"));
+				p.setName(rs.getString("NAME"));
+				p.setPrice(rs.getDouble("PRICE"));
+				p.setQuantity(rs.getInt("QUANTITY"));
+				products.add(p);
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getErrorCode());
+			throw new DaoException("unable to get products", e);
+		} finally {
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return products;
+	}
+
+PART 2: using JPA with ORM
+
+@Override
+	public class ProductDaoJpaImpl .. {
+	@PersistenceContext
+	EntityManager em;
+
+	public void addProduct(Product p) throws DaoException {
+		em.persist(p);	 
+	}
+
+	@Override
+	public List<Product> getProducts() throws DaoException {
+		 TypedQuery<Product> query = ...
+		 return query.getResultList();
+	}
+
+
+PART 3: using Spring Data JPA
+
+public interface ProductDao extends JpaRepository<Product, Integer> {
+
+}
+
+==========
+
+@Query("") can be SQL or JP-QL
+
+exeucteQuery() ; select
+
+executeUpdate(); update, delete and insert
+
+===============================================
+
+RESTful Web services 
+
+Postman for REST client
+
+============
+ 
 
 
