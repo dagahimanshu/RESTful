@@ -690,5 +690,75 @@ RESTful Web services
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 </dependency>
+	==> gives:
+	1) Tomcat as Servlet Container / web container [ Undertow, Netty, Jetty, --> need custom config]
+	2) Spring Web MVC
+	3) jackson [ Java <--> JSON ] [ XML, CSV, RSS --> need custom config]
 
+	@Controller ==> to return SSR pages [ dynmaic HTML]
+	@RestController ==> to return presentation of representation
+
+	@RestController
+	@RequestMapping("api/products")
+	public class ProductController {
+		@GetMapping()
+		m1()
+
+		@PostMapping()
+		m2()
+	}
+
+===========
+
+@Query("select name, price from Product p where p.price >= :l and p.price <= :h")
+List<Object[]> queryByRange(@Param("l") double low, @Param("h") double high);
+
+Object[0] ==> name
+Object[1] ==> price
+
+----
+package com.adobe.prj.dto;
+class ProductDTO {
+	name
+	price
+	constuctors
+	setters, getters
+}
+
+
+@Query("select new com.adobe.prj.dto.ProductDTO(name, price) from Product p where p.price >= :l and p.price <= :h")
+List<ProductDTO> queryByRange(@Param("l") double low, @Param("h") double high);
+
+-------------
+
+POST http://localhost:8080/api/products
+
+Headers:
+
+Accept: application/json
+content-type:application/json
+
+Body [ raw is selected]
+{
+    "name":"LG Inverter AC",
+    "price":49999.0,
+    "category":"Electronics",
+    "quantity":100
+}
+
+============
+
+PUT http://localhost:8080/api/products/6
+
+Accept: application/json
+content-type:application/json
+
+Body [ raw is selected]
+{
+   "quantity":200
+}
+
+javax.persistence.TransactionRequiredException: Executing an update/delete query
+
+===============================
 
