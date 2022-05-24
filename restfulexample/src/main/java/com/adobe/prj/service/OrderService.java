@@ -2,6 +2,8 @@ package com.adobe.prj.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ public class OrderService {
 		return productDao.findById(id).get();
 	}
 	
+	@Transactional
 	public void updateProduct(int qty, int id) {
 		productDao.updateProduct(qty, id);
 	}

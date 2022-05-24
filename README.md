@@ -762,3 +762,120 @@ javax.persistence.TransactionRequiredException: Executing an update/delete query
 
 ===============================
 
+
+Programmatic Transaction
+
+public void addProduct(Product p) {
+	Connection con =. ..
+	try {
+		con.setAutoCommit(false);
+			...
+		con.commit();
+	} catch(SQLException ex) {
+		con.rollback();
+	}
+}
+
+--
+
+
+public void addProduct(Product p) {
+	EntityManager em = ..
+	Transaction tx = null;
+	try {
+		Transaction tx = em.beginTransaction();
+			...
+		tx.commit();
+	} catch(SQLException ex) {
+		tx.rollback();
+	}
+}
+
+---
+
+Declarative Transaction
+
+@Transactional
+public void addProduct(Product p) {
+}
+
+=============
+
+i don't have below method:
+@Modifying
+@Query("update Product set quantity = :qty where id = :id")
+void updateProduct(@Param("qty") int quantity, @Param("id") int id);
+
+
+In Service:
+	DIRTY Checking [ within PersistencContext / Trnsactional Boundary ]
+	within transactional boundary if entity becomes dirty ==> automatic UPDATE is triggred
+	@Transactional
+	public void updateProduct(int qty, int id) {
+		 productDao.findById(id).get();
+		  productDao.findById(id).get();
+		Product p =  productDao.findById(id).get();
+		p.setQuantity(qty);
+		// throw new IllegalStateException();
+	}
+
+===
+
+Instead of Mutation with @Transactional; entity is given to View Tier [ Controller or Presentation page]
+where data gets changed ==> No concept of DirtyChecking
+
+
+===============================================================
+
+AOP ==> Aspect Oriented Programming
+
+* cross-cutting concerns leads to code tangling and code scatterning
+
+Examples of cross-cutting concerns:
+* Logging
+* Security
+* Profile
+* Transaction
+
+public void transferFunds(Account fa, Account to, double amt) {
+	profile.startTime();
+	log.debug("transaction started!!!")
+	if(securityCtx.isAuthenticated()) {
+		beginTX;
+		log.debug("valid user");
+		debit(amt);
+		log.debug("amount debited");
+		credit(amt);
+		log.debug("amount credited!!1");
+		commitTX;
+	}
+	profile.endTime();
+}
+
+---
+
+AOP
+* Aspect ==> bit of concern which can be used along with main logic ==> LogAspect, SecurityAspect, TransactionAspect
+* JoinPoint ==> place in code where Aspect can be applied [ any method or any exception]
+* PointCut ==> selected JoinPoint for weaving Aspect
+* Advice ==> BeforeAdvice, AfterAdvice, AfterReturningAdvice, AroundAdvice, AfterThrowingAdvice
+
+
+===========================
+
+Customer 					<==> customers
+	email 					<--> email [PK]
+	firstName				<--> first_name
+	lastName;				<--> last_name
+
+CustomerDao
+	==> No extra methods
+
+OrderService
+@Autowired
+CustomerDao
+	
+
+CustomerController ==> OrderService ==> CustomerDao
+
+===============================================================
