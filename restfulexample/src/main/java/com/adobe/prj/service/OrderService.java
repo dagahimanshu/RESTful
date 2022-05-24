@@ -29,4 +29,8 @@ public class OrderService {
 //		return productDao.getById(id); // lazy fetching
 		return productDao.findById(id).get();
 	}
+	
+	public void updateProduct(int qty, int id) {
+		productDao.updateProduct(qty, id);
+	}
 }

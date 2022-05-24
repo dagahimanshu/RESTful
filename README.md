@@ -685,9 +685,10 @@ executeUpdate(); update, delete and insert
 
 RESTful Web services 
 
-Postman for REST client
-
-============
  
+ <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
 
 
