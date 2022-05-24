@@ -494,5 +494,7 @@ Spring Data JPA with RESTful Web services
 
 ============================================
 
+Day 2
+
 
 
