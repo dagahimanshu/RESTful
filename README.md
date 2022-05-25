@@ -881,3 +881,59 @@ CustomerController ==> OrderService ==> CustomerDao
 ===============================================================
 
 Day 3:
+
+--> JPA; EMF, EM, DataSource ==> Simplifiy CRUD; JpaRepository
+	JpaRepository
+	Custom querys in interfaces
+
+	List<Product> findByCategory(String cat); // select * ... where category = ?
+
+	@Query("") ==> JP-QL or Native SQL
+
+	FOR DELETE, UPDATE or custom INSERT
+	@Modifying
+	@Query
+
+	@Query("select name, price from Product")
+	List<Object[]> methodWithScalarValues()	
+
+	@Query("select new pkg.ProductDTO(name, price) from Product")
+	List<ProductDTO> methodWithScalarValues()	
+
+	interface IProduct {
+			String getName();
+			double getPrice();
+	}
+
+	List<IProduct> findByCategory();
+
+---------
+
+Spring MVC and building RESTful wS
+
+DispatcherServlet ==> HandlerMapping ==> @Controller or @RestController
+
+@RequestMapping
+@RequestBody
+@ResponseBody
+@PathVariable
+@RequestParam
+ResponseEntity
+@GetMapping()
+@PostMapping()
+@PutMapping()
+@DeleteMapping()
+
+@Transactional ==> Declarative Transaction
+
+--------------------------
+
+AOP
+
+
+AspectJ is an aspect-oriented programming (AOP)
+
+==> Spring Boot StaticWeaving ==> compilation or Loading [ StaticMethodMatcherPointcut ]
+
+==> DynamicWeaving ==> AspectJ libraries [DynamicMethodMatcherPointcut, MethodInterceptor]
+
