@@ -1,6 +1,7 @@
 package com.adobe.prj.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -27,9 +28,14 @@ public class OrderService {
 		return productDao.save(p);
 	}
 	
-	public Product getById(int id) {
+	public Product getById(int id) throws NotFoundException {
 //		return productDao.getById(id); // lazy fetching
-		return productDao.findById(id).get();
+		Optional<Product> opt = productDao.findById(id);
+		if(opt.isPresent()) {
+			return opt.get();
+		} else {
+			throw new NotFoundException("Product with id " + id + " doesn't exist!!!");
+		}
 	}
 	
 	@Transactional

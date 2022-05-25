@@ -937,3 +937,59 @@ AspectJ is an aspect-oriented programming (AOP)
 
 ==> DynamicWeaving ==> AspectJ libraries [DynamicMethodMatcherPointcut, MethodInterceptor]
 
+https://docs.spring.io/spring-framework/docs/2.0.x/reference/aop.html
+
+public @interface Loggable{}
+
+@Before("annotation(Loggable.class"))
+
+@Loggable
+m1()
+
+@Loggable
+m2()
+
+=====================
+
+
+
+@Around("execution(* * (..) && annotation(Transactional.class)")
+	public Object doProfile(ProceedingJoinPoint pjp) throws Throwable {
+		try {
+			begin TX;
+				Object ret = pjp.proceed();
+			commit
+		} catch(SQLException ex) {
+			rolback();
+		}
+		
+		return ret;
+	}
+
+=============
+
+transaction(a1,a2, amt) {
+	..
+	..
+	if(doCheckBalance(amt)) {
+
+	}
+
+} 
+
+===========================================
+
+@Before("@annotation(Loggable)")
+public void logBefore(JoinPoint jp) {
+		logger.info("Called : " + jp.getSignature());
+		Object[] args = jp.getArgs();
+		for (Object obj : args) {
+			logger.info("arguments : " + obj);
+		}
+	}
+
+============================================
+
+
+
+

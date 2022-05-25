@@ -5,6 +5,7 @@ import java.util.Date;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -29,6 +30,12 @@ public class LogAspect {
 	@After("execution(* com.adobe.prj.service.*.*(..))")
 	public void logAfter(JoinPoint jp) {
 		logger.info("****************");
+	}
+	
+
+	@AfterThrowing(value = "execution(* com.adobe.prj.service.*.*(..))", throwing = "ex")
+	public void logException(JoinPoint jp , Exception ex) {
+		logger.info("Exception : " + ex.getMessage());
 	}
 	
 	@Around("execution(* com.adobe.prj.service.*.*(..))")
