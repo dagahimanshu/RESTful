@@ -879,3 +879,5 @@ CustomerDao
 CustomerController ==> OrderService ==> CustomerDao
 
 ===============================================================
+
+Day 3:
