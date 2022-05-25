@@ -1186,6 +1186,34 @@ orderDao.findById(Order.class, 10);
 
 --------------------
 
+Bi-Directional
+
+Customer.java
+	
+	@OneToMany(mappedBy="customer")
+	List<Order> orders = new ArrayList<>();
+	
+Order.java
+	@ManyToOne
+	@JoinColumn(name="customer_fk") // introduce FK in owning entity
+	private Customer customer;
+
+==================================
+
+
+ProductDao; CustomerDao; OrderDao
+
+Order manages Item ==> cascade
+No need for ItemDao; 
+
+====================================
+
+
+public interface OrderDao extends JpaRepository<Order, Integer> {
+
+}
+
+===============
 
 
 
