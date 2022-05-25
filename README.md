@@ -1088,3 +1088,104 @@ Spring Boot devtools
 </dependency>
 
 
+----
+
+pom.xml
+Product.java
+ProductController.java
+@Validated and @Valid
+
+GlobalExceptionHandler.java
+
+-----------
+
+Unit Testing Spring Boot application:
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+</dependency>
+
+--> JUnit
+--> Mockito [ mock api]
+	Controller --> Service --> Dao --> database
+	To test controllers we can mock Service tier
+--> jsonpath https://jsonpath.com/
+--> hamcrest ==> matchers for assertion [ AAA]
+
+
+=======================
+
+
+JPA ==> Mapping Associations
+
+Swiggy, Amazon
+	* Product
+	* Supplier 
+	* Customer
+	* Order
+	* Item
+	* Payment
+	* Address
+
+mysql> insert into customers values ('peter@adobe.com','Peter', 'Smith');
+mysql> insert into customers values ('sam@adobe.com','Samantha', 'Rai');
+
+
+Order <--> Item
+
+Assume 1 order has 4 items
+
+orderDao.save(o);
+itemDao.save(i1);
+itemDao.save(i2);
+itemDao.save(i3);
+itemDao.save(i4);
+
+With @OneToMany(cascade = CascadeType.ALL)
+
+orderDao.save(o);
+
+itemDao.save(i2);
+itemDao.save(i3);
+itemDao.save(i4);
+
+With  
+@OneToMany(cascade = CascadeType.ALL)
+@JoinColumn(name="order_fk") // introduce FK in child
+List<Item> items = new ArrayList<>();
+
+orderDao.save(o); 
+	takes care saving items also
+
+orderDao.delete(o);
+	deletes items of order
+
+----
+
+Fetching by default for oneToMany is LAZY fetching
+
+orderDao.findById(Order.class, 10);
+	select * from orders where oid = 10;
+
+	items are not fetched from database;
+
+---
+
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="order_fk") // introduce FK in child
+ 	List<Item> items = new ArrayList<>();
+
+
+
+orderDao.findById(Order.class, 10);
+	select * from orders where oid = 10;
+
+	items belonging to order with id 10 are also fetched from database;
+
+--------------------
+
+
+
+
