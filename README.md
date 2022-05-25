@@ -1390,3 +1390,49 @@ Prmoetheus ==> pull model ; scapring metrics from endpoints exposed by the appli
 </dependency>
 
 http://localhost:8080/actuator/prometheus
+
+docker run -d --name=prometheus -p 9090:9090 -v C:\prometheus\prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus --config.file=/etc/prometheus/prometheus.yml
+
+=====================================================================
+
+Assignment:
+
+	Employee
+		email; firstName
+
+	Project
+		id; name; client[string]; start_date; end_date;
+
+	EmployeeProject ==> Association class
+		id; Employee; role; start_date; end_date
+
+	EmployeeProject ==> Employee will be ManyToOne
+	EmployeeProject ==> Project will be ManyToOne
+
+	Endpoints
+	1) http://localhost:8080/api/employees
+		CREATE 
+	2) http://localhost:8080/api/projects
+		CREATE
+	3) http://localhost:8080/api/employees-projects
+
+		CREATE
+		{
+			employee: {},
+			project: {},
+			start_date:
+			end_date:
+		}
+
+		GET
+
+		JPA.pdf
+
+====================
+
+
+
+
+
+
+
