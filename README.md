@@ -1302,6 +1302,91 @@ public OpenApi configOpenAPI() {
 	return new OpenApi().info(..)..
 }
 
-===================
+====================================
+
+by default Spring container creates a Singleton bean [ scope]
+
+@Component
+public class MyClass {
+
+}
 
 
+
+=======
+
+
+@Scope("prototype")
+@Service
+public class OrderService { }
+
+prototype ==> injects differnet instances of bean whereever @Autowired
+
+@RestController
+public class ProductController {
+	@Autowired
+	OrderService service
+}
+
+
+@RestController
+public class OrderController {
+	@Autowired
+	OrderService service
+}
+
+
+===
+
+@Scope("request")
+@Service
+public class OrderService { }
+
+client makes a request ==> instance of OrderService is created and used until response is not commited
+one instance per client request
+
+===
+
+@Scope("session")
+@Service
+public class OrderService { }
+one per client session; 
+
+=============================================
+
+
+
+Health Check
+
+A Distributed system ==> database, queues, other services
+
+Health Check ==> status of our running applications ==> DOWN , SLOW
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+application.properties
+management.endpoints.web.exposure.include=*
+management.metrics.distribution.percentiles-histogram.http.server.requests=true
+
+
+	Predefined health indicators:
+	1) DataSourceHealthIndicators
+	2) MongoHealthIndicator
+	3) RedisHealthIndicator
+
+====================
+
+Micrometer ==> library for Montoring tools [ Promethues, Grafana]
+
+
+Prmoetheus ==> pull model ; scapring metrics from endpoints exposed by the application
+
+<dependency>
+	<groupId>io.micrometer</groupId>
+	<artifactId>micrometer-registry-prometheus</artifactId>
+</dependency>
+
+http://localhost:8080/actuator/prometheus
