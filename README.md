@@ -1214,6 +1214,94 @@ public interface OrderDao extends JpaRepository<Order, Integer> {
 }
 
 ===============
+order from client ==> React, Angular, Android, Swift, ...
 
+POST http://localhost:8080/api/orders
+{
+	"customer": {
+		"email": "sam@adobe.com"
+	},
+	"items": [
+			{"product": {"id": 2}, "qty": 2},
+		 	{"product": {"id": 6}, "qty": 4}
+	]
+}
+
+===========
+
+Order.java; Item.java; Customer.java
+
+OrderService.java
+
+ORderDao.java
+
+OrderController.java
+
+=======================================================
+
+API Docs:
+
+RAML, Swagger ==> API
+
+/books:
+  /{bookTitle}
+    get:
+      queryParameters:
+        author:
+          displayName: Author
+          type: string
+          description: An author's full name
+          example: Mary Roach
+          required: false
+        publicationYear:
+          displayName: Pub Year
+          type: number
+          description: The year released for the first time in the US
+          example: 1984
+          required: false
+        rating:
+          displayName: Rating
+          type: number
+          description: Average rating (1-5) submitted by users
+          example: 3.14
+          required: false
+        isbn:
+          displayName: ISBN
+          type: string
+          minLength: 10
+          example: 0321736079
+    put:
+      queryParameters:
+        access_token:
+          displayName: Access Token
+          type: string
+          description: Token giving you permission to make call
+          required: true
+
+ Swagger ==> OpenAPI
+
+ 	<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.8</version>
+	</dependency>
+
+http://localhost:8080/v3/api-docs
+
+http://localhost:8080/swagger-ui/index.html
+
+springdoc.swagger-ui.enabled=false
+springdoc.packagesToScan=com.package1, com.package2
+
+springdoc.pathsToMatch=/api/**, /admin/**
+
+=======================
+
+@Bean
+public OpenApi configOpenAPI() {
+	return new OpenApi().info(..)..
+}
+
+===================
 
 

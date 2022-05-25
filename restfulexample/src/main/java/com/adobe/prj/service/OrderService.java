@@ -29,8 +29,8 @@ public class OrderService {
 	/* 
 	  	{
 			"customer": {
-			"email": "sam@adobe.com"
-		},
+				"email": "sam@adobe.com"
+			},
 		"items": [
 				{"product": {"id": 2}, "qty": 2},
 		 		{"product": {"id": 6}, "qty": 4}
