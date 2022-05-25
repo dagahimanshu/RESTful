@@ -990,6 +990,101 @@ public void logBefore(JoinPoint jp) {
 
 ============================================
 
+Global Exception Handling for @Controller or @RestController
 
+Using @ControllerAdvice Classes
+
+
+=======================
+Validation:
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+@Validated
+public class ProductController {
+	@PostMapping()
+	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p) {
+		p = service.insertProduct(p);
+		return new ResponseEntity<Product>(p, HttpStatus.CREATED);
+	}
+	...
+}
+
+	@NotBlank(message="Name is required")
+	@Column(name="name", nullable = false)
+	private String name;
+	
+	@Min(value = 10, message="Price ${validatedValue} should be more than {value}")
+	private double price;
+	
+	@Column(name="qty")
+	@Min(value = 0, message="Quantity ${validatedValue} should be more than {value}")
+	private int quantity;
+
+```
+
+POST http://localhost:8080/api/products
+
+{
+    "name":"",
+    "price":-100.0,
+    "category":"Electronics",
+    "quantity":-5
+}
+
+{
+    "timestamp": "2022-05-25T06:04:23.046+00:00",
+    "status": 400,
+    "error": "Bad Request",
+    "path": "/api/products"
+}
+
+Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public org.springframework.http.ResponseEntity<com.adobe.prj.entity.Product> com.adobe.prj.api.ProductController.addProduct(com.adobe.prj.entity.Product) with 3 errors: 
+
+[Field error in object 'product' on field 'quantity': rejected value [-5]; codes [Min.product.quantity,Min.quantity,Min.int,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.quantity,quantity]; arguments []; default message [quantity],0]; 
+
+default message [Quantity -5 should be more than 0]] 
+
+[Field error in object 'product' on field 'name': rejected value []; codes [NotBlank.product.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.name,name]; arguments []; default message [name]]; 
+
+default message [Name is required]] 
+
+[Field error in object 'product' on field 'price': rejected value [-100.0]; codes [Min.product.price,Min.price,Min.double,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [product.price,price]; arguments []; default message [price],10]; 
+
+default message [Price -100.0 should be more than 10]] ]
+
+```
+
+	 @ExceptionHandler(MethodArgumentNotValidException.class)
+	 public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+		 Map<String, Object> body = new LinkedHashMap<>();
+		 body.put("time", new Date());
+		 List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+				 	.map(exception -> exception.getDefaultMessage())
+				 	.collect(Collectors.toList());
+		 body.put("errors", errors);
+		 return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
+	 }
+
+{
+    "time": "2022-05-25T06:11:04.407+00:00",
+    "errors": [
+        "Name is required",
+        "Price -100.0 should be more than 10",
+        "Quantity -5 should be more than 0"
+    ]
+}
+
+
+```
+
+Spring Boot devtools
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+</dependency>
 
 

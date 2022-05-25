@@ -1,13 +1,13 @@
 package com.adobe.prj.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="products")
@@ -17,15 +17,18 @@ public class Product  {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@NotBlank(message="Name is required")
 	@Column(name="name", nullable = false)
 	private String name;
 	
+	@Min(value = 10, message="Price ${validatedValue} should be more than {value}")
 	private double price;
 	
 	@Column(name="category", length = 100)
 	private String category;
 	
 	@Column(name="qty")
+	@Min(value = 0, message="Quantity ${validatedValue} should be more than {value}")
 	private int quantity;
 
 	public Product() {
