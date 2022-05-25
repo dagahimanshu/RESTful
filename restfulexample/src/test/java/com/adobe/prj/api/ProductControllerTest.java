@@ -66,8 +66,8 @@ public class ProductControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(p);
 		
-//		when(service.insertProduct(Mockito.any(Product.class)))
-//			.thenReturn(Mockito.any(Product.class));
+		when(service.insertProduct(Mockito.any(Product.class)))
+			.thenReturn(null);
 	
 		mockMvc.perform(post("/api/products")
 			.content(json)
