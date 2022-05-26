@@ -1,9 +1,13 @@
 package com.adobe.prj;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,10 +43,21 @@ public class RestClient  {
 			
 	}
 	
+	public void getList(RestTemplate template) {
+		ParameterizedTypeReference<List<Product>> responseType = 
+				new ParameterizedTypeReference<List<Product>>() {
+	    };
+	    
+	    ResponseEntity<List<Product>> exchange = template.exchange("http://localhost:8080/api/products", 
+	    			HttpMethod.GET, null, responseType);
+	    
+	    exchange.getBody().forEach(System.out::println);
+	}
+	
 	@Bean
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
 		return args -> {
-			addProduct(restTemplate);
+			getList(restTemplate);
 		};
 	}
 	
