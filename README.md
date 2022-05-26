@@ -1630,8 +1630,71 @@ public class RestfulexampleApplication {
 
 ========
 
+docker run --name some-redis -p 6379:6379 -d redis
+
+	<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+spring.redis.port=6379
+spring.redis.host=127.0.0.1
+
+package com.adobe.prj.cfg;
+
+import java.time.Duration;
+
+import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
+
+@Configuration
+//@EnableCaching
+public class RedisCustomConfig {
+
+	@Bean
+	public RedisCacheConfiguration cacheConfiguration() {
+		return RedisCacheConfiguration.defaultCacheConfig()
+				.entryTtl(Duration.ofMinutes(60))
+				.disableCachingNullValues()
+				.serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+	}
+
+	@Bean
+	public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
+		return (builder) -> builder
+				.withCacheConfiguration("productCache",
+						RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(10)))
+				.withCacheConfiguration("customerCache",
+						RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(5)));
+	}
+
+}
+
+=========
+
+nodejs
+
+npm i -g redis-commander
+redis-commander
+http://localhost:8081/
 
 
 
 
 
+=========
+
+nodejs
+
+npm i -g redis-commander
+redis-commander
+http://localhost:8081/
