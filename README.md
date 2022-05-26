@@ -1599,8 +1599,36 @@ public class RestfulexampleApplication {
 	
 --------------------------
 
+Scheduling
+@EnableScheduling
+
+https://spring.io/blog/2020/11/10/new-in-spring-5-3-improved-cron-expressions
+
+@Scheduled(fixedRate = 2000)
+@Scheduled(fixedRate = 2000)
+@Scheduled(fixedDelay  = 2000)
+@Scheduled(cron  = "0 0/30 * * * *")
+
+--
 
 
+@SpringBootApplication
+@EnableCaching
+@EnableScheduling
+public class RestfulexampleApplication {
+	
+	@Autowired
+	private CacheManager cacheManager;
+	
+	@Scheduled(cron  = "0 0/30 * * * *")
+	public void clearCache() {
+		System.out.println("Cache Clear!!!");
+		cacheManager.getCacheNames().forEach(name -> {
+			cacheManager.getCache(name).clear();
+		});
+	}
+
+========
 
 
 
