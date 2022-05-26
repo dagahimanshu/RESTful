@@ -5,6 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -36,11 +39,23 @@ public class ProductController {
 	@Autowired
 	private OrderService service;
 	
-	
+	@Cacheable(value="productCache", key="#id")
 	@GetMapping("/cache/{id}")
+	public @ResponseBody Product getProductCache(@PathVariable("id") int id) throws NotFoundException {
+		System.out.println("Cache miss!!!!");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return service.getById(id);
+	}
+	
+	
+	@GetMapping("/etag/{id}")
 	public ResponseEntity<Product> getProductCacheById(@PathVariable("id") int id) throws NotFoundException {
 		Product p = service.getById(id);
-		return ResponseEntity.ok().eTag(Long.toString(p.hashCode())).body(p);
+		return ResponseEntity.ok().eTag(Long.toString(p.getVersion())).body(p);
 	}
 	
 	// GET
@@ -74,6 +89,7 @@ public class ProductController {
 	// POST
 	// http://localhost:8080/api/products
 	// content-type:application/json
+	@Cacheable(value="productCache", key="#p.id", condition = "#p.price > 20000")
 	@PostMapping()
 	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p) {
 		p = service.insertProduct(p);
@@ -82,14 +98,22 @@ public class ProductController {
 	
 	// PUT
 	// http://localhost:8080/api/products/3
+	@CachePut(value="productCache", key="#id")
 	@PutMapping("/{id}")
 	public @ResponseBody Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) throws NotFoundException {
 		service.updateProduct(p.getQuantity(), id);
 		return service.getById(id);
 	}
 	
+	@CacheEvict(value="productCache", key="#id")
 	@DeleteMapping("/{id}")
 	public void deleteProduct(@PathVariable("id") int id) {
 		
+	}
+	
+	@GetMapping("/clear")
+	@CacheEvict(value="productCache", allEntries = true)
+	public @ResponseBody String clear() {
+		return "cacche cleared!!!";
 	}
 }

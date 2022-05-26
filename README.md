@@ -1523,9 +1523,83 @@ REsponse ==> 304, no payload
 
 It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content was not changed
 
-=========================================
 
-Resume @ 11:20
+@Version
+private int version;
+
+initial value in DB will be 0
+
+every mutation done to the row => version gets updated
+
+==================================================================
+Database Level Caching with Hibernate ==> ECache, JBossSwarmCache
+
+Caching @ Server 
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
+
+ConcurrentMapCache
+ConcurrentMapCacheManager
+
+@SpringBootApplication
+@EnableCaching
+public class RestfulexampleApplication {
+
+--
+	to store in cache
+	@Cacheable(value="productCache", key="#id")
+	@GetMapping("/cache/{id}")
+	public @ResponseBody Product getProductCache(@PathVariable("id") int id) throws NotFoundException {
+		System.out.println("Cache miss!!!!");
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return service.getById(id);
+	}
+	
+
+	to update cache:
+	
+	@CachePut(value="productCache", key="#id")
+	@PutMapping("/{id}")
+	public @ResponseBody Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) throws NotFoundException {
+		service.updateProduct(p.getQuantity(), id);
+		return service.getById(id);
+	}
+
+	// remove from cache
+
+	@CacheEvict(value="productCache", key="#id")
+	@DeleteMapping("/{id}")
+	public void deleteProduct(@PathVariable("id") int id) {
+		
+	}
+
+	@GetMapping("/clear")
+	@CacheEvict(value="productCache", allEntries = true)
+	public @ResponseBody String clear() {
+		return "cacche cleared!!!";
+	}
+
+	@Cacheable(value="productCache", key="#p.id", condition = "#p.price > 20000")
+	@PostMapping()
+	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p) {
+	
+
+	--
+
+	@Cacheable(value="productCache", key="#id", unless = "#result !=null")
+	@PostMapping()
+	public Product getProduct(int id) {
+	
+--------------------------
+
+
 
 
 
