@@ -1,4 +1,4 @@
-package com.adobe.prj.api;
+package com.adobe.prj;
 
 import java.sql.Connection;
 import java.sql.SQLException;

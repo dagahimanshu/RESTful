@@ -1430,6 +1430,62 @@ Assignment:
 
 ====================
 
+http://localhost:8080/actuator/health/fetch-products-health
+
+============
+
+Day 4:
+
+* AOP
+* Validation [ javax.validation.contraints] ==> @Valid ==> MethodArgumentNotValidException
+* @ControllerAdvice, @ExceptionHandler
+* Association between entities [ Cascade, Lazy and EAGER, DirtyChecking @Transactional]
+* @WebMvcTest
+* OpenAPI, Swagger to document APIs [ @Controller and @RestController] => @Tag, ApiOperation,..
+* spring-boot-starter-actuator
+	info, health, metrics
+	micrometer ==> Prometheus / Graffana [ Scrape ]
+
+	jvm_threads_peak_threads
+	jvm_threads_live_threads
+	jvm_threads_states_threads
+
+	http_server_requests_seconds_count ==> total number of requests app received at this endpoint
+	http_server_requests_seconds_sum ==> total duration number of requests app received at this endpoint
+
+
+rate(http_server_requests_seconds_count{uri="/api/products"}[2m])
+
+
+==================================================================================
+
+Spring is an alternate to Enterprise Java Bean [ executed within EJB container provided by Application Server]
+
+EJB ==> Distributed computing [ iiop (Java <--> C++ / VB)]
+
+====================================================================
+
+@Test ==> info to Unit testing Framework to execute these methods ==> JUnit, TestNG
+
+SpringContainer ==> Beans are created 
+
+
+@WebMvcTest(ProductController.class) ==> 
+
+TestDispatcherServlet instead of DispatcherServlet
+
+@MockBean OrderService
+
+===========================================
+
+Use @Mock when unit testing your business logic (only using JUnit and Mockito). 
+
+Use @MockBean when you write a test that is backed by a Spring Test Context and you want to add or replace a bean with a mocked version of it.
+
+======================================================================================
+
+
+
 
 
 
