@@ -36,6 +36,13 @@ public class ProductController {
 	@Autowired
 	private OrderService service;
 	
+	
+	@GetMapping("/cache/{id}")
+	public ResponseEntity<Product> getProductCacheById(@PathVariable("id") int id) throws NotFoundException {
+		Product p = service.getById(id);
+		return ResponseEntity.ok().eTag(Long.toString(p.hashCode())).body(p);
+	}
+	
 	// GET
 	// http://localhost:8080/api/products
 	// http://localhost:8080/api/products?page=2&size=10

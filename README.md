@@ -1484,6 +1484,46 @@ Use @MockBean when you write a test that is backed by a Spring Test Context and 
 
 ======================================================================================
 
+RestTemplate
+
+The RestTemplate is the central Spring class for client-side HTTP access. 
+
+Java Client [ Standalone, RestfulServer] ==> wants to consume APIs
+
+Testing APIs
+
+String result = template.getForObject("http://localhost:8080/api/products", String.class);
+	
+
+[{"id":1,"name":"Sony Bravia","price":135000.0,"category":"LED","quantity":100},{"id":2,"name":"MotoG","price":12999.0,"category":"4G","quantity":98},{"id":3,"name":"Onida Thunder","price":3500.0,"category":"CRT","quantity":100},{"id":4,"name":"iPhone XR","price":99999.0,"category":"4G","quantity":100},{"id":5,"name":"Oppo","price":9999.0,"category":"4G","quantity":100},{"id":6,"name":"LG Inverter AC","price":49999.0,"category":"Electronics","quantity":196}]
+
+
+========================================
+
+Caching
+	Expires, Cache-Control, ETag
+
+Product with id 4 ==> ETag identifier
+
+The ETag (or entity tag) HTTP response header is an identifier for a specific version of a resource. 
+
+GET  http://localhost:8080/api/products/cache/3
+
+Etag: "777469997"
+
+Body {...}
+
+
+GET http://localhost:8080/api/products/4
+If-None-Match: "777469997"
+
+REsponse ==> 304, no payload
+
+==> Hits Server, gets data from database ==> for the entity match the ETag; if matches ==> Send NOT_MODIFIED (304)
+
+It lets caches be more efficient and save bandwidth, as a web server does not need to resend a full response if the content was not changed
+
+=========================================
 
 
 
