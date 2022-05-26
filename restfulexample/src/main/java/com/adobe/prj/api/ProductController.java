@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,15 +32,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @RestController
 @RequestMapping("api/products")
 @Validated
-@Tag(name="products", description = "the product API")
+@Tag(name = "products", description = "the product API")
 public class ProductController {
 	@Autowired
 	private OrderService service;
-	
-	@Cacheable(value="productCache", key="#id")
+
+	@Cacheable(value = "productCache", key = "#id")
 	@GetMapping("/cache/{id}")
 	public @ResponseBody Product getProductCache(@PathVariable("id") int id) throws NotFoundException {
 		System.out.println("Cache miss!!!!");
@@ -50,70 +53,81 @@ public class ProductController {
 		}
 		return service.getById(id);
 	}
-	
-	
+
 	@GetMapping("/etag/{id}")
 	public ResponseEntity<Product> getProductCacheById(@PathVariable("id") int id) throws NotFoundException {
 		Product p = service.getById(id);
 		return ResponseEntity.ok().eTag(Long.toString(p.getVersion())).body(p);
 	}
-	
+
 	// GET
 	// http://localhost:8080/api/products
 	// http://localhost:8080/api/products?page=2&size=10
 	// http://localhost:8080/api/products?low=100&high=5000
 	// Accept: application/json ==> jackson
 	@GetMapping()
-	public @ResponseBody List<Product> 
-		getProducts(@RequestParam(name = "low", defaultValue = "0.0") double low, 
-				@RequestParam(name = "high", defaultValue = "0.0") double high) {
-		if(low == 0.0 && high == 0.0) {
+	public @ResponseBody List<Product> getProducts(@RequestParam(name = "low", defaultValue = "0.0") double low,
+			@RequestParam(name = "high", defaultValue = "0.0") double high) {
+		if (low == 0.0 && high == 0.0) {
 			return service.getProducts();
 		} else {
 			return service.getProductsByRange(low, high);
 		}
 	}
-	
+
 	// GET
 	// http://localhost:8080/api/products/3
 	@Operation(summary = "Get a product by its ID")
-	@ApiResponses(value =  {
-			@ApiResponse(responseCode = "200" , description = "Found product for given id"),
-			@ApiResponse(responseCode = "404" , description = "product for given id Not Found")
-	})
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found product for given id"),
+			@ApiResponse(responseCode = "404", description = "product for given id Not Found") })
 	@GetMapping("/{id}")
 	public @ResponseBody Product getProductById(@PathVariable("id") int id) throws NotFoundException {
 		return service.getById(id);
 	}
-	
+
 	// POST
 	// http://localhost:8080/api/products
 	// content-type:application/json
-	@Cacheable(value="productCache", key="#p.id", condition = "#p.price > 20000")
+	@Cacheable(value = "productCache", key = "#p.id", condition = "#p.price > 20000")
 	@PostMapping()
 	public ResponseEntity<Product> addProduct(@RequestBody @Valid Product p) {
 		p = service.insertProduct(p);
 		return new ResponseEntity<Product>(p, HttpStatus.CREATED);
 	}
-	
+
 	// PUT
 	// http://localhost:8080/api/products/3
-	@CachePut(value="productCache", key="#id")
+	@CachePut(value = "productCache", key = "#id")
 	@PutMapping("/{id}")
-	public @ResponseBody Product updateProduct(@PathVariable("id") int id, @RequestBody Product p) throws NotFoundException {
+	public @ResponseBody Product updateProduct(@PathVariable("id") int id, @RequestBody Product p)
+			throws NotFoundException {
 		service.updateProduct(p.getQuantity(), id);
 		return service.getById(id);
 	}
-	
-	@CacheEvict(value="productCache", key="#id")
+
+	@CacheEvict(value = "productCache", key = "#id")
 	@DeleteMapping("/{id}")
-	public void deleteProduct(@PathVariable("id") int id) {
-		
+	public Product deleteProduct(@PathVariable("id") int id) {
+		return new Product();
 	}
-	
+
 	@GetMapping("/clear")
-	@CacheEvict(value="productCache", allEntries = true)
+	@CacheEvict(value = "productCache", allEntries = true)
 	public @ResponseBody String clear() {
 		return "cacche cleared!!!";
 	}
+
+	@GetMapping("/hateoas/{pid}")
+	public ResponseEntity<EntityModel<Product>> getProductWithLink(@PathVariable("pid") int id)
+			throws NotFoundException {
+		Product p = service.getById(id);
+		EntityModel<Product> em = EntityModel.of(p,
+				linkTo(methodOn(ProductController.class).getProductWithLink(id)).withSelfRel()
+				.andAffordance(afford(methodOn(ProductController.class).updateProduct(id, null)))
+				.andAffordance(afford(methodOn(ProductController.class).deleteProduct(id))),
+				linkTo(methodOn(ProductController.class).getProducts(0, 0)).withRel("products"));
+
+		return ResponseEntity.ok(em);
+	}
+
 }

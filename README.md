@@ -1687,10 +1687,6 @@ npm i -g redis-commander
 redis-commander
 http://localhost:8081/
 
-
-
-
-
 =========
 
 nodejs
@@ -1698,3 +1694,63 @@ nodejs
 npm i -g redis-commander
 redis-commander
 http://localhost:8081/
+
+===============================
+
+HATEOAS: Hypermedia as the Engine of Application State (HATEOAS) 
+
+http://swiggy.com/orders
+
+1) http://swiggy.com/orders/1/confirm
+2) http://swiggy.com/orders/1/cancel
+
+and 
+1.1) http://swiggy.com/orders/1/pay
+
+1.3) http://swiggy.com/orders/1/track
+
+===========
+
+http://localhost:8080/books/3
+
+{
+	_link: {
+		"self": "http://localhost:8080/books/3",
+		"author": "http://localhost:8080/books/3/author",
+		"supplier": http://localhost:8080/books/3/supplier",
+		"delete": "http://localhost:8080/books/3"
+	}
+}
+
+WebMvcLinkBuilder: Builder to ease building Link instances
+
+* EntityModel – represents RepresentationModel containing only single entity and related links
+* CollectionModel – is a wrapper for a collection of entities and related links
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+</dependency>
+
+@EnableHypermediaSupport(type = HypermediaType.HAL_FORMS)
+
+
+@GetMapping("/hateoas/{pid}")
+	public ResponseEntity<EntityModel<Product>> getProductWithLink(@PathVariable("pid") int id)
+			throws NotFoundException {
+		Product p = service.getById(id);
+		EntityModel<Product> em = EntityModel.of(p,
+				linkTo(methodOn(ProductController.class).getProductWithLink(id)).withSelfRel()
+				.andAffordance(afford(methodOn(ProductController.class).updateProduct(id, null)))
+				.andAffordance(afford(methodOn(ProductController.class).deleteProduct(id))),
+				linkTo(methodOn(ProductController.class).getProducts(0, 0)).withRel("products"));
+
+		return ResponseEntity.ok(em);
+	}
+===
+
+HATEOAS, ASYNC, Reactive, Security
+
+===========================================
+
+
