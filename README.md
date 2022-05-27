@@ -1754,3 +1754,155 @@ HATEOAS, ASYNC, Reactive, Security
 ===================================================
 
 
+Day 5
+
+import axios from 'axios';
+
+export default function ProductList {
+
+	React.useEffect(() => {
+		axios.get("http://localhost:8080/products").then (response => {
+
+		})
+	})
+
+	return <>
+
+	</>
+}
+
+fetch("http://localhost:8080/api/products").then(response => response.json()).then(data => console.log(data))
+
+=================================
+
+HATEOAS
+Level 3 RESTful services
+data + links
+
+WebMvcLinkBuilder linkTo, affordance, methodOn
+
+===========
+Spring Data REST
+
+MySQL, JPA, Web, Rest Respositories
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+Spring Data REST ==> spring-boot-starter-data-rest exposes endpoints based on Respositories
+
+No need for Controller
+
+http://localhost:8080/products
+http://localhost:8080/products?page=0&size=3
+http://localhost:8080/products/search
+http://localhost:8080/products/search/findByCategory?category=4G
+
+"rel"
+
+"product-range" : {
+          "href" : "http://localhost:8080/products/search/range?"
+        },
+
+public interface ProductDao extends JpaRepository<Product, Integer>{
+
+
+	@RestResource(path="range", rel="product-range")
+	@Query("from Product p where p.price >= :l and p.price <= :h")
+	List<Product> queryByRange(@Param("l") double low, @Param("h") double high);
+
+
+	@RestResource(exported=false)
+	@Modifying
+	@Query("update Product set quantity = :qty where id = :id")
+	void updateProduct(@Param("qty") int quantity, @Param("id") int id);
+}
+
+
+
+===
+
+@RespositoryRestResource(path="members", collectionResourceRel="registered-members")
+public interface CustomerDao extends JpaRepository<Customer, Integer>{
+}
+
+instead of
+http://localhost:8080/customers
+we have
+http://localhost:8080/members/
+
+if we get order:
+{
+	"orderDate": ..
+	"registerd-members" : { "email": // }
+}
+
+========
+
+Projection
+
+@Projection(
+		name="productdata",
+		types = {Product.class})
+public interface ProductDTO {
+	String getName();
+	double getPrice();
+}
+
+
+
+http://localhost:8080/products/1?projection=productdata
+
+====
+
+Excerpts
+Projections ==> default to resource
+
+@RespositoryRestResource(excerpts= CustomCustomer.class)
+public interface CustomerDao extends JpaRepository<Customer, Integer>{
+}
+
+================
+
+application.properties
+
+spring.data.rest.base-path=/api
+
+============
+
+Avoid using @RestController in Spring Data Rest
+
+Prefer:
+@BasePathAwareController
+	to override endpoints
+
+@RepositoryRestController
+	to add more endpoints on top of what Spring Data Rest
+
+============================
+
+@Component 
+public class CustomConfig implements RepositoryRestConfigurer {
+	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
+		// using config disable few HTTP methods; set base path
+	}
+}
+
+=====================
+
+
