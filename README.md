@@ -1908,4 +1908,110 @@ public class CustomConfig implements RepositoryRestConfigurer {
 
 Async
 
+@EnableAsync ==> allowing Threadpool creation [ not Tomcat Thread pool]
+
+
+Create Pool of Thread connections
+
+@Bean(name = "asyncExecutor")
+public Executor asyncExecutor() {
+		..
+}
+
+
+interface Callable<T> {
+	T call() throws Exception;
+}
+
+Returned data is Future [ Promise API ]
+
+========================================================================
+
+Reactive Programming
+	RxJava, Reactor.io, Vert.X
+
+Spring Boot ==> Webflux MVC
+	Netty web server, with Reactive Streams using Project Reactor	
+
+ 
+a. All requests are reciveid to  a unique socket ==> SocketChannel
+b) event loop ==> for ScoketChannels
+
+c. eventloop inbound channel handlers ==> processing [ prefer NIO r2dbc , ReactiveMongoRepository]
+d. application specifc code is executed
+e. on completeion evntloop check outbound channel
+f. response is sent Socket
+
+reapeat above
+
+============
+
+Security / MicroService
+
+=================================
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+one default user with "username": "user" and
+Using generated security password: 8427b82a-2ddc-46f8-95f2-4784049ae982
+
+is created
+
+--> Loginpage
+
+http://localhost:8080/login
+http://localhost:8080/logout
+
+
+JWT
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+Header:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+
+Payload:
+{
+  "sub": "banu",
+  "name": "Banuprakash",
+  "iat": 1516239022,
+  "exp": 1616239022,
+  "iss": "adobe"
+}
+
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+  your-256-bit-secret
+)  
+
+===
+
+POST : http://localhost:8080/login
+Headers
+accept: json
+content-type: json
+
+Response Headers:
+Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYW51IiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjUzNjM2NzYwLCJleHAiOjE2NTQ0NTM4MDB9.Y0TjbwWqXzZwS-iGIZZCkl1xi537C_ZtaJQKgASFQocOdReoAtQqb7Ld_Xq3LXJL0KEH66M30OlvX5k0zwFnAA
+
+---
+
+GET http://localhost:8080/user
+
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYW51IiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjUzNjM2NzYwLCJleHAiOjE2NTQ0NTM4MDB9.Y0TjbwWqXzZwS-iGIZZCkl1xi537C_ZtaJQKgASFQocOdReoAtQqb7Ld_Xq3LXJL0KEH66M30OlvX5k0zwFnAA
+
+=================================================
+
+
+
+
 
