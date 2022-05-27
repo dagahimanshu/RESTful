@@ -1782,7 +1782,8 @@ data + links
 WebMvcLinkBuilder linkTo, affordance, methodOn
 
 ===========
-Spring Data REST
+Spring Data REST ==> HATEOAS + Spring Data JPA + RestController
+
 
 MySQL, JPA, Web, Rest Respositories
 		<dependency>
@@ -1903,6 +1904,8 @@ public class CustomConfig implements RepositoryRestConfigurer {
 	}
 }
 
-=====================
+==============================================================
+
+Async
 
 
