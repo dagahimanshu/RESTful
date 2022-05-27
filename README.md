@@ -2010,8 +2010,87 @@ GET http://localhost:8080/user
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYW51IiwiYXV0aG9yaXRpZXMiOlt7ImF1dGhvcml0eSI6IlJPTEVfVVNFUiJ9XSwiaWF0IjoxNjUzNjM2NzYwLCJleHAiOjE2NTQ0NTM4MDB9.Y0TjbwWqXzZwS-iGIZZCkl1xi537C_ZtaJQKgASFQocOdReoAtQqb7Ld_Xq3LXJL0KEH66M30OlvX5k0zwFnAA
 
 =================================================
+MicroServices:
+
+1) DiscoveryService:
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+</dependency>
+
+<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+
+spring.application.name=discovery-service
+server.port=8761
+
+eureka.client.register-with-eureka= false
+eureka.client.fetch-registry=false
 
 
+@EnableEurekaServer
+@SpringBootApplication
+public class DiscoveryServiceApplication {
+
+=====
+
+Movie ==> Review
+
+Reviewservice
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+
+server.port=8083
+spring.application.name=review-service
+
+@EnableEurekaClient
+public class ReviewServiceApplication {
+
+http://localhost:8761
+
+http://localhost:8083/reviews
+
+=========
+
+MovieService
+
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+
+Feign ==> Declartive Rest Client instead of using RestTemplate
+
+@EnableFeignClients
+@EnableEurekaClient
+@SpringBootApplication
+public class MovieServiceApplication {
+
+
+Ribbon, Hystrix ==> Load Balancing, Api Gateway
+
+http://localhost:8083
+http://localhost:8081
+
+http://localhost:8080/movies
+http://localhost:8080/reviews
+
+Spring Cloud Configuration ==> github config
+
+==========================================================
 
 
 
