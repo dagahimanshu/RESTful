@@ -5,7 +5,20 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2022-05-25T16:00:00Z</updated>
+  <updated>2022-05-26T15:00:00Z</updated>
+  <entry>
+    <title>A Bootiful Podcast: the good Dr. David Syer on the new and novel in Spring and Kubernetes</title>
+    <link rel="alternate" href="https://spring.io/blog/2022/05/26/a-bootiful-podcast-the-good-dr-david-syer-on-the-new-and-novel-in-spring-and-kubernetes" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2022-05-27:4810</id>
+    <updated>2022-05-26T15:00:00Z</updated>
+    <content type="html">&lt;p&gt;Hi, Spring fans! In this installment, Josh Long talks to Spring Boot and Spring Cloud luminary, the good Dr. @David_Syer, about the latest and greatest on Spring and Kubernetes &lt;/p&gt;
+&lt;iframe title="The good Dr. David Syer on the new and novel in Spring and Kubernetes " allowtransparency="true" height="150" width="100%" style="border: none; min-width: min(100%, 430px);" scrolling="no" data-name="pb-iframe-player" src="https://www.podbean.com/player-v2/?i=87fyr-1236e3b-pb&amp;from=pb6admin&amp;share=1&amp;download=1&amp;rtl=0&amp;fonts=Arial&amp;skin=1&amp;font-color=&amp;logo_link=episode_page&amp;btn-skin=7"&gt;&lt;/iframe&gt;
+&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
+  </entry>
   <entry>
     <title>Spring Authorization Server 0.3.0 available now</title>
     <link rel="alternate" href="https://spring.io/blog/2022/05/25/spring-authorization-server-0-3-0-available-now" />
@@ -171,7 +184,9 @@ If you are making use of third-party jars that offer Spring integration, you sho
 &lt;div class="sectionbody"&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;Although we don&amp;#8217;t recommend it for production, you can try Spring Boot 3.0 milestones today to see how hard it will be to migrate your project.
-Trying the milestone on a branch of your code is a great way to preempt any potential problems.&lt;/p&gt;
+Trying the milestones on a branch of your code is a great way to preempt any potential problems.
+They are available from &lt;a href="https://repo.spring.io/milestone" class="bare"&gt;https://repo.spring.io/milestone&lt;/a&gt;.
+Creating a project on &lt;a href="https://start.spring.io" class="bare"&gt;https://start.spring.io&lt;/a&gt; and selecting the latest 3.0 milestone will include the necessary repositories in the build configuration.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;We&amp;#8217;re always interested in feedback and we&amp;#8217;re very happy when bugs get identified before we release the GA version.&lt;/p&gt;
@@ -764,20 +779,6 @@ Details of commercial support can be found at &lt;a href="https://tanzu.vmware.c
   &lt;li&gt;Spring Data Couchbase &lt;code&gt;5.0 M4&lt;/code&gt; - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-couchbase/5.0.0-M4"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/5.0.0-M4/api/"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/couchbase/docs/5.0.0-M4/reference/html/"&gt;Documentation&lt;/a&gt; - &lt;a href="https://github.com/spring-projects/spring-data-couchbase/releases/tag/5.0.0-M4"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Spring Data Relational &lt;code&gt;3.0 M4&lt;/code&gt; - &lt;a href="https://repo.spring.io/libs-milestone/org/springframework/data/spring-data-relational/3.0.0-M4"&gt;Artifacts&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/3.0.0-M4/api/"&gt;Javadoc&lt;/a&gt; - &lt;a href="https://docs.spring.io/spring-data/jdbc/docs/3.0.0-M4/reference/html/"&gt;Documentation&lt;/a&gt; - &lt;a href="https://github.com/spring-projects/spring-data-relational/releases/tag/3.0.0-M4"&gt;Changelog&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- rendered by Sagan Renderer Service --&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Framework 6.0.0-M4 available now</title>
-    <link rel="alternate" href="https://spring.io/blog/2022/05/12/spring-framework-6-0-0-m4-available-now" />
-    <category term="releases" label="Releases" />
-    <author>
-      <name>Brian Clozel</name>
-    </author>
-    <id>tag:spring.io,2022-05-12:4790</id>
-    <updated>2022-05-12T15:19:00Z</updated>
-    <content type="html">&lt;p&gt;On behalf of the team and everyone who has contributed, I am pleased to announce that Spring Framework &lt;code&gt;6.0.0-M4&lt;/code&gt; is available now.&lt;/p&gt;
-&lt;p&gt;Spring Framework &lt;code&gt;6.0.0-M4&lt;/code&gt; ships with &lt;a href="https://spring.io/blog/2022/05/11/spring-framework-5-3-20-and-5-2-22-available-now"&gt;all the fixes from 5.3.20 released yesterday&lt;/a&gt;, and also includes &lt;a href="https://github.com/spring-projects/spring-framework/releases/tag/v6.0.0-M4"&gt;39 fixes and improvements&lt;/a&gt; specific to the 6.0 branch.&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://projects.spring.io/spring-framework/"&gt;Project Page&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-framework"&gt;GitHub&lt;/a&gt; | &lt;a href="https://github.com/spring-projects/spring-framework/issues"&gt;Issues&lt;/a&gt; | &lt;a href="https://docs.spring.io/spring-framework/docs/6.0.0-M4/reference/html/"&gt;Documentation&lt;/a&gt;&lt;/p&gt;
 &lt;!-- rendered by Sagan Renderer Service --&gt;</content>
   </entry>
 </feed>
